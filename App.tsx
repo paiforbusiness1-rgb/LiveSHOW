@@ -305,17 +305,7 @@ Fecha: ${formattedDate}
 Hora: ${formattedTime}
 Evento: LIVE SHOW - NOVIEMBRE 29
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-${JSON.stringify({
-  firstName: userData.firstName,
-  lastName: userData.lastName,
-  email: userData.email,
-  registrationDate: formattedDate,
-  registrationTime: formattedTime,
-  timestamp: registrationDate.getTime(),
-  event: 'LIVE SHOW - NOVIEMBRE 29'
-}, null, 2)}`;
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
       
       // Check if QRCode is available
       if (typeof QRCode === 'undefined') {
