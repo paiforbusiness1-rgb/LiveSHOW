@@ -96,7 +96,7 @@ const MatrixBanner: React.FC = () => {
     <>
       {audioSrc && <audio ref={audioRef} src={audioSrc} preload="auto" />}
       <div 
-        className="fixed bottom-0 left-0 right-0 bg-black text-[#39FF14] p-3 z-50 overflow-hidden border-t-4 border-[#39FF14]"
+        className="fixed bottom-0 left-0 right-0 bg-black text-[#39FF14] p-2 sm:p-3 z-50 overflow-hidden border-t-2 sm:border-t-4 border-[#39FF14]"
         style={{ 
           fontFamily: "'VT323', monospace", 
           opacity: opacity,
@@ -104,7 +104,7 @@ const MatrixBanner: React.FC = () => {
           textShadow: "2px 2px 0px rgba(0, 50, 0, 0.8)"
         }}
       >
-        <div className="container mx-auto text-center uppercase tracking-widest text-xl md:text-2xl">
+        <div className="container mx-auto text-center uppercase tracking-widest text-sm sm:text-base md:text-xl lg:text-2xl px-2">
           {message}
         </div>
         {/* Scanline effect overlay */}

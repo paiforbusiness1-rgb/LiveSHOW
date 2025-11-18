@@ -70,21 +70,21 @@ const RegistrationForm: React.FC<{
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto flex flex-col items-center justify-center min-h-screen pt-10 pb-20 px-4">
+    <div className="w-full max-w-xl mx-auto flex flex-col items-center justify-center min-h-screen pt-6 sm:pt-8 md:pt-10 pb-20 md:pb-24 px-4">
       {/* Header Section */}
-      <div className="text-center mb-8">
-        <h1 className="text-4xl md:text-5xl font-normal tracking-wide mb-2">LIVE SHOW</h1>
-        <h2 className="text-4xl md:text-5xl font-semibold mb-8">NOVIEMBRE 29</h2>
+      <div className="text-center mb-6 md:mb-8">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-normal tracking-wide mb-2">LIVE SHOW</h1>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold mb-4 md:mb-8">NOVIEMBRE 29</h2>
         
-        <p className="text-sm md:text-base text-gray-700 max-w-md mx-auto leading-relaxed">
+        <p className="text-xs sm:text-sm md:text-base text-gray-700 max-w-md mx-auto leading-relaxed px-2">
           Ingresa tu primer nombre, primer apellido y email para poder enviarte el codigo QR necesario y hacer valida tu promoción el dia del evento.
         </p>
       </div>
 
       {/* Form Box */}
-      <Window className="mb-12">
-        <form onSubmit={handleSubmit} className="flex flex-col space-y-6">
-          <h3 className="text-3xl font-light text-center mb-2">Pre-registro</h3>
+      <Window className="mb-8 md:mb-12">
+        <form onSubmit={handleSubmit} className="flex flex-col space-y-4 md:space-y-6">
+          <h3 className="text-2xl sm:text-3xl font-light text-center mb-2">Pre-registro</h3>
           
           {error && <div className="bg-red-50 border border-red-500 text-red-700 px-4 py-2 text-sm text-center">{error}</div>}
 
@@ -143,9 +143,9 @@ const RegistrationForm: React.FC<{
       </Window>
 
       {/* Footer Info */}
-      <div className="text-center space-y-2 mb-16">
-        <p className="text-xl font-light">in Puerto Trasgallo</p>
-        <p className="text-xs text-gray-600">ft. Fresh Richie, Daevián, Turx, Loft Temai y Acids</p>
+      <div className="text-center space-y-2 mb-8 md:mb-16">
+        <p className="text-lg md:text-xl font-light">in Puerto Trasgallo</p>
+        <p className="text-xs text-gray-600 px-2">ft. Fresh Richie, Daevián, Turx, Loft Temai y Acids</p>
       </div>
 
       {/* Bottom Brand */}
@@ -171,21 +171,21 @@ const ConfirmationScreen: React.FC<{
 }> = ({ userData, onConfirm, onBack, isSubmitting }) => (
   <div className="w-full max-w-xl mx-auto flex flex-col items-center justify-center min-h-screen pt-4 pb-20 px-4">
     <Window>
-      <div className="flex flex-col space-y-6 text-center">
-        <h3 className="text-2xl font-light">Confirmar Datos</h3>
-        <div className="text-left space-y-4 border-t border-b border-gray-200 py-4">
-          <div className="grid grid-cols-3 gap-4">
-            <span className="font-bold text-gray-500 text-sm uppercase">Nombre:</span>
-            <span className="col-span-2 font-medium">{userData.firstName} {userData.lastName}</span>
+      <div className="flex flex-col space-y-4 md:space-y-6 text-center">
+        <h3 className="text-xl sm:text-2xl font-light">Confirmar Datos</h3>
+        <div className="text-left space-y-3 md:space-y-4 border-t border-b border-gray-200 py-3 md:py-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
+            <span className="font-bold text-gray-500 text-xs sm:text-sm uppercase">Nombre:</span>
+            <span className="sm:col-span-2 font-medium text-sm sm:text-base break-words">{userData.firstName} {userData.lastName}</span>
           </div>
-          <div className="grid grid-cols-3 gap-4">
-            <span className="font-bold text-gray-500 text-sm uppercase">Email:</span>
-            <span className="col-span-2 font-medium break-all">{userData.email}</span>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
+            <span className="font-bold text-gray-500 text-xs sm:text-sm uppercase">Email:</span>
+            <span className="sm:col-span-2 font-medium text-sm sm:text-base break-all">{userData.email}</span>
           </div>
         </div>
-        <div className="flex justify-center space-x-4 pt-2">
-          <Button onClick={onBack} disabled={isSubmitting} className="border-gray-400 text-gray-600">Volver</Button>
-          <Button onClick={onConfirm} disabled={isSubmitting}>
+        <div className="flex flex-col sm:flex-row justify-center gap-3 sm:space-x-4 pt-2">
+          <Button onClick={onBack} disabled={isSubmitting} className="w-full sm:w-auto border-gray-400 text-gray-600">Volver</Button>
+          <Button onClick={onConfirm} disabled={isSubmitting} className="w-full sm:w-auto">
             {isSubmitting ? '...' : 'Confirmar'}
           </Button>
         </div>
@@ -195,34 +195,34 @@ const ConfirmationScreen: React.FC<{
 );
 
 const SuccessScreen: React.FC = () => (
-  <div className="w-full max-w-xl mx-auto flex flex-col items-center justify-center min-h-screen pt-10 pb-20 px-4">
+  <div className="w-full max-w-xl mx-auto flex flex-col items-center justify-center min-h-screen pt-6 md:pt-10 pb-20 px-4">
     {/* Header Section */}
-    <div className="text-center mb-8">
-      <h1 className="text-4xl md:text-5xl font-normal tracking-wide mb-2">LIVE SHOW</h1>
-      <h2 className="text-4xl md:text-5xl font-semibold mb-8">NOVIEMBRE 29</h2>
+    <div className="text-center mb-6 md:mb-8">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-normal tracking-wide mb-2">LIVE SHOW</h1>
+      <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold mb-4 md:mb-8">NOVIEMBRE 29</h2>
     </div>
 
     {/* Success Box */}
-    <Window className="mb-12">
-      <div className="flex flex-col space-y-6 text-center">
-        <h3 className="text-3xl font-light mb-4">¡Pre-registro Exitoso!</h3>
+    <Window className="mb-8 md:mb-12">
+      <div className="flex flex-col space-y-4 md:space-y-6 text-center">
+        <h3 className="text-2xl sm:text-3xl font-light mb-3 md:mb-4">¡Pre-registro Exitoso!</h3>
         
-        <div className="text-left space-y-4 border-t border-b border-gray-200 py-6">
-          <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+        <div className="text-left space-y-3 md:space-y-4 border-t border-b border-gray-200 py-4 md:py-6">
+          <p className="text-sm md:text-base text-gray-700 leading-relaxed px-2">
             Debiste recibir un correo con el código QR que deberás presentar ese día en la puerta.
           </p>
         </div>
         
-        <p className="text-lg md:text-xl font-light text-gray-800">
+        <p className="text-base md:text-lg lg:text-xl font-light text-gray-800">
           Te esperamos 6:00 PM
         </p>
       </div>
     </Window>
 
     {/* Footer Info */}
-    <div className="text-center space-y-2 mb-16">
-      <p className="text-xl font-light">in Puerto Trasgallo</p>
-      <p className="text-xs text-gray-600">ft. Fresh Richie, Daevián, Turx, Loft Temai y Acids</p>
+    <div className="text-center space-y-2 mb-8 md:mb-16">
+      <p className="text-lg md:text-xl font-light">in Puerto Trasgallo</p>
+      <p className="text-xs text-gray-600 px-2">ft. Fresh Richie, Daevián, Turx, Loft Temai y Acids</p>
     </div>
 
     {/* Bottom Brand */}
