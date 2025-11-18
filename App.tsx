@@ -279,7 +279,43 @@ const App: React.FC = () => {
       }
 
       const fullName = `${userData.firstName} ${userData.lastName}`;
-      const qrContent = JSON.stringify({ email: userData.email, name: fullName, timestamp: Date.now() });
+      const registrationDate = new Date();
+      
+      // Format date and time in readable format (Spanish locale)
+      const formattedDate = registrationDate.toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      const formattedTime = registrationDate.toLocaleTimeString('es-ES', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+      
+      // QR Code content formatted in an executive/professional way
+      // This will be readable when scanned and can be used to mark as processed in Firebase
+      const qrContent = `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PRE-REGISTRO VÁLIDO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Nombre: ${userData.firstName} ${userData.lastName}
+Email: ${userData.email}
+Fecha: ${formattedDate}
+Hora: ${formattedTime}
+Evento: LIVE SHOW - NOVIEMBRE 29
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${JSON.stringify({
+  firstName: userData.firstName,
+  lastName: userData.lastName,
+  email: userData.email,
+  registrationDate: formattedDate,
+  registrationTime: formattedTime,
+  timestamp: registrationDate.getTime(),
+  event: 'LIVE SHOW - NOVIEMBRE 29'
+}, null, 2)}`;
       
       // Check if QRCode is available
       if (typeof QRCode === 'undefined') {
@@ -338,7 +374,7 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-white text-black font-sans">
       {renderContent()}
-      <MatrixBanner />
+      {/* <MatrixBanner /> */}
     </div>
   );
 };
