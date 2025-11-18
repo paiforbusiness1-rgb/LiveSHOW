@@ -23,21 +23,34 @@ const RegistrationForm: React.FC<{
   const validate = (data: UserData) => {
     const errors: { firstName?: string; lastName?: string; email?: string } = {};
     
+    // Validación y sanitización de firstName
     if (!data.firstName) {
       errors.firstName = "Requerido";
     } else if (data.firstName.length < 2) {
-        errors.firstName = "Mínimo 2 caracteres";
+      errors.firstName = "Mínimo 2 caracteres";
+    } else if (data.firstName.length > 50) {
+      errors.firstName = "Máximo 50 caracteres";
+    } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s-]+$/.test(data.firstName)) {
+      errors.firstName = "Solo letras, espacios y guiones";
     }
 
+    // Validación y sanitización de lastName
     if (!data.lastName) {
       errors.lastName = "Requerido";
     } else if (data.lastName.length < 2) {
-        errors.lastName = "Mínimo 2 caracteres";
+      errors.lastName = "Mínimo 2 caracteres";
+    } else if (data.lastName.length > 50) {
+      errors.lastName = "Máximo 50 caracteres";
+    } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s-]+$/.test(data.lastName)) {
+      errors.lastName = "Solo letras, espacios y guiones";
     }
 
+    // Validación de email
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!data.email) {
       errors.email = "Requerido";
+    } else if (data.email.length > 100) {
+      errors.email = "Email demasiado largo";
     } else if (!emailRegex.test(data.email)) {
       errors.email = "Email inválido";
     }
@@ -97,6 +110,8 @@ const RegistrationForm: React.FC<{
                 onChange={(e) => setUserData(prev => ({ ...prev, firstName: e.target.value }))}
                 className={`w-full ${formErrors.firstName ? 'border-red-500' : ''}`}
                 placeholder="Primer nombre..."
+                maxLength={50}
+                pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s-]+"
               />
               {formErrors.firstName && <p className="text-red-500 text-xs mt-1 ml-1">{formErrors.firstName}</p>}
             </div>
@@ -108,6 +123,8 @@ const RegistrationForm: React.FC<{
                 onChange={(e) => setUserData(prev => ({ ...prev, lastName: e.target.value }))}
                 className={`w-full ${formErrors.lastName ? 'border-red-500' : ''}`}
                 placeholder="Primer apellido..."
+                maxLength={50}
+                pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s-]+"
               />
               {formErrors.lastName && <p className="text-red-500 text-xs mt-1 ml-1">{formErrors.lastName}</p>}
             </div>
@@ -121,6 +138,7 @@ const RegistrationForm: React.FC<{
               onChange={(e) => setUserData(prev => ({ ...prev, email: e.target.value }))}
               className={`w-full ${formErrors.email ? 'border-red-500' : ''}`}
               placeholder="Email..."
+              maxLength={100}
             />
             {formErrors.email && <p className="text-red-500 text-xs mt-1 ml-1">{formErrors.email}</p>}
           </div>
@@ -248,36 +266,27 @@ const App: React.FC = () => {
   const handleConfirmRegistration = useCallback(async () => {
     setIsSubmitting(true);
     setError(null);
-    console.log('🚀 Iniciando registro...');
     try {
       // Initialize firebase if not already
-      console.log('📦 Inicializando Firebase...');
       firebaseApp; 
 
-      console.log('🔍 Verificando si el email existe...');
       const emailExists = await checkIfEmailExists(userData.email);
       if (emailExists) {
-        console.log('❌ Email ya existe');
         setError('Este email ya ha sido registrado.');
         setAppState('form');
         setIsSubmitting(false);
         return;
       }
-      console.log('✅ Email disponible');
 
       const fullName = `${userData.firstName} ${userData.lastName}`;
       const qrContent = JSON.stringify({ email: userData.email, name: fullName, timestamp: Date.now() });
       
       // Check if QRCode is available
-      console.log('🔲 Verificando QRCode...');
       if (typeof QRCode === 'undefined') {
         throw new Error('QRCode library not loaded');
       }
-      console.log('✅ QRCode disponible');
       
-      console.log('🎨 Generando código QR...');
       const qrCodeDataUrl = await QRCode.toDataURL(qrContent, { width: 300, margin: 2 });
-      console.log('✅ QR generado');
 
       const registrationData = {
         firstName: userData.firstName,
@@ -288,31 +297,21 @@ const App: React.FC = () => {
         registeredAt: new Date().toISOString()
       };
 
-      console.log('💾 Guardando en Firebase...');
-      // Type assertion to match the service expectation or update service to accept firstName/lastName
-      // For now, we just pass the object, Firestore will save whatever we give it.
       await saveRegistration(registrationData as any);
-      console.log('✅ Guardado en Firebase');
       
-      console.log('📧 Enviando email...');
       await sendConfirmationEmail({
         to_name: fullName,
         to_email: userData.email,
         qr_code_image_url: qrCodeDataUrl,
       });
-      console.log('✅ Email enviado');
 
-      console.log('🎉 Registro exitoso! Cambiando a pantalla de éxito...');
       setAppState('success');
     } catch (err: any) {
-      console.error("❌ Registration failed:", err);
-      console.error("Error details:", {
-        message: err?.message,
-        text: err?.text,
-        stack: err?.stack,
-        fullError: err
-      });
-      setError(`Ocurrió un error: ${err?.message || err?.text || 'Error desconocido'}. Inténtalo de nuevo.`);
+      // Only log errors in development
+      if (process.env.NODE_ENV === 'development') {
+        console.error("Registration failed:", err);
+      }
+      setError(`Ocurrió un error. Inténtalo de nuevo.`);
       setAppState('form');
     } finally {
       setIsSubmitting(false);

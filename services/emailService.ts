@@ -31,31 +31,18 @@ export const sendConfirmationEmail = async (params: EmailParams): Promise<void> 
     const emailjsLib = (window as any).emailjs;
     
     // Initialize with public key
-    console.log('🔑 Inicializando EmailJS con Public Key:', emailJsConfig.publicKey);
     emailjsLib.init(emailJsConfig.publicKey);
 
-    console.log('📤 Enviando email con:', {
-      serviceID: emailJsConfig.serviceID,
-      templateID: emailJsConfig.templateID,
-      to_email: params.to_email
-    });
-
-    const result = await emailjsLib.send(
+    await emailjsLib.send(
       emailJsConfig.serviceID, 
       emailJsConfig.templateID, 
       params
     );
-    
-    console.log('✅ EmailJS respuesta:', result);
   } catch (error: any) {
-    console.error('❌ Failed to send email:', error);
-    console.error('Error completo:', {
-      status: error?.status,
-      text: error?.text,
-      message: error?.message,
-      serviceID: emailJsConfig.serviceID,
-      templateID: emailJsConfig.templateID
-    });
+    // Only log errors in development
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Failed to send email:', error);
+    }
     
     // Mejor mensaje de error
     let errorMessage = 'Email could not be sent.';
